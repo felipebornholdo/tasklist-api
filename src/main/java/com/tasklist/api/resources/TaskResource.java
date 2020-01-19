@@ -4,7 +4,6 @@ import com.tasklist.api.Service.TaskService;
 import com.tasklist.api.model.Task;
 import com.tasklist.api.model.dto.TaskDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

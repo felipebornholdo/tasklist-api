@@ -4,7 +4,6 @@ import com.tasklist.api.Service.Mapper.TaskMapper;
 import com.tasklist.api.model.Task;
 import com.tasklist.api.model.dto.TaskDTO;
 import com.tasklist.api.repository.TaskRepository;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
