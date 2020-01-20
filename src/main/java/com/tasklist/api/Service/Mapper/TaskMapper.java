@@ -22,6 +22,20 @@ public class TaskMapper {
         }
         task.setLastEdit(new Date());
         task.setExclusionDate(taskDTO.getExclusionDate());
+        task.setConclusionDate(taskDTO.getConclusionDate());
         return task;
+    }
+
+    public static TaskDTO toTaskDTO(Task task) {
+        final TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setId(task.getId());
+        taskDTO.setTitle(task.getTitle());
+        taskDTO.setDescription(task.getDescription());
+        taskDTO.setActive(task.isActive());
+        taskDTO.setCreatedDate(task.getCreatedDate());
+        taskDTO.setLastEdit(task.getLastEdit());
+        taskDTO.setExclusionDate(task.getExclusionDate());
+        taskDTO.setConclusionDate(task.getConclusionDate());
+        return taskDTO;
     }
 }
