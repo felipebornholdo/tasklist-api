@@ -2,7 +2,7 @@
 
 ## Pré requisitos
 - Maven
-- Java 8
+- Java 11
 
 ## Build Setup
 ```
