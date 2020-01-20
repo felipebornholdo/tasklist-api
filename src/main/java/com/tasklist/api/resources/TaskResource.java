@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/api/tasks")
 public class TaskResource {
@@ -29,19 +30,19 @@ public class TaskResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<Void> save(@RequestBody TaskDTO taskDTO) throws Exception {
         this.taskService.save(taskDTO);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateTask(@RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<Void> updateTask(@RequestBody TaskDTO taskDTO) throws Exception {
         this.taskService.updateTask(taskDTO);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(name = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
         this.taskService.delete(id);
         return ResponseEntity.ok().build();
     }

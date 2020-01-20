@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 public class TaskService {
@@ -24,45 +24,56 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public Optional<Task> findById(Long id) {
-        return this.taskRepository.findById(id);
+    public Task findById(Long id) {
+        return this.taskRepository.findById(id).orElse(null);
     }
 
-    public void save(TaskDTO taskDTO) {
-        Task task = TaskMapper.toTask(taskDTO);
-        this.taskRepository.save(task);
+    public void save(TaskDTO taskDTO) throws Exception {
+        try {
+            Task task = TaskMapper.toTask(taskDTO);
+            this.taskRepository.save(task);
+        } catch (Exception e) {
+            throw new Exception("Erro ao adicionar a tarefa.");
+        }
     }
 
     public void changeStatus(Long id) throws Exception {
-        Task task = new Task();
         try {
-            Optional<Task> taskOptional = findById(id);
-            if (taskOptional.isPresent()) {
-                task = taskOptional.get();
-            }
-            if (task.isActive()) {
-                task.setActive(false);
+            Task task = findById(id);
+            TaskDTO taskDTO = TaskMapper.toTaskDTO(task);
+            taskDTO.setActive(!task.isActive());
+            if (taskDTO.isActive()) {
+                taskDTO.setConclusionDate(new Date());
             } else {
-                task.setActive(true);
+                taskDTO.setConclusionDate(null);
             }
-            task.setLastEdit(new Date());
+            taskDTO.setLastEdit(new Date());
+            task = TaskMapper.toTask(taskDTO);
             this.taskRepository.save(task);
         } catch (Exception e) {
-            throw new Exception("Erro ao mudar status da Tarefa");
+            throw new Exception("Erro ao mudar status da tarefa.");
         }
     }
 
-    public void updateTask(TaskDTO taskDTO) {
-        Optional<Task> taskOptional = this.findById(taskDTO.getId());
-        if (taskOptional.isPresent()) {
-            Task task = taskOptional.get();
-            task = TaskMapper.toTask(taskDTO);
-            task.setCreatedDate(taskOptional.get().getCreatedDate());
-            this.taskRepository.save(task);
+    public void updateTask(TaskDTO taskDTO) throws Exception {
+        try {
+            Task entity = findById(taskDTO.getId());
+            if (Objects.nonNull(entity)) {
+                Task task = TaskMapper.toTask(taskDTO);
+                task.setCreatedDate(entity.getCreatedDate());
+                this.taskRepository.save(task);
+            }
+        } catch (Exception e) {
+            throw new Exception("Erro ao atualizar a tarefa.");
         }
     }
 
-    public void delete(Long id){
-        taskRepository.deleteById(id);
+    public void delete(Long id) throws Exception {
+        try {
+            this.taskRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new Exception("Erro ao deletar a tarefa");
+        }
     }
+
 }
